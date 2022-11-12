@@ -10,7 +10,7 @@ namespace TestTennis
         public void query_single_day()
         {
             IBudgetRepo repo = Substitute.For<IBudgetRepo>();
-            var budgetService = new BudgetService(repo);
+            var budgetService = new BudgetService2(repo);
             repo.GetAll().Returns(new List<Budget>
             {
                 new Budget() {YearMonth = "202211", Amount = 3000}
@@ -18,14 +18,14 @@ namespace TestTennis
             var result = budgetService.Query(new DateTime(2022, 11, 12), new DateTime(2022, 11, 12));
             Assert.AreEqual(100, result);
 
-            //var budgetService = new BudgetService(null).CalcDate(new DateTime(2022, 11, 12), new DateTime(2022, 11, 12));
+            //var budgetService = new BudgetService2(null).CalcDate(new DateTime(2022, 11, 12), new DateTime(2022, 11, 12));
         }
 
         [TestMethod]
         public void query_single_month()
         {
             IBudgetRepo repo = Substitute.For<IBudgetRepo>();
-            var budgetService = new BudgetService(repo);
+            var budgetService = new BudgetService2(repo);
             repo.GetAll().Returns(new List<Budget>
             {
                 new Budget() {YearMonth = "202207", Amount = 62}
@@ -43,7 +43,7 @@ namespace TestTennis
         public void query_month()
         {
             IBudgetRepo repo = Substitute.For<IBudgetRepo>();
-            var budgetService = new BudgetService(repo);
+            var budgetService = new BudgetService2(repo);
             repo.GetAll().Returns(new List<Budget>
             {
                 new Budget() {YearMonth = "202211", Amount = 60000}
@@ -56,7 +56,7 @@ namespace TestTennis
         public void query_error_month()
         {
             IBudgetRepo repo = Substitute.For<IBudgetRepo>();
-            var budgetService = new BudgetService(repo);
+            var budgetService = new BudgetService2(repo);
             repo.GetAll().Returns(new List<Budget>
             {
                 new Budget() {YearMonth = "202211", Amount = 0}
@@ -69,7 +69,7 @@ namespace TestTennis
         public void query_multi_month()
         {
             IBudgetRepo repo = Substitute.For<IBudgetRepo>();
-            var budgetService = new BudgetService(repo);
+            var budgetService = new BudgetService2(repo);
             repo.GetAll().Returns(new List<Budget>
             {
                 new Budget() {YearMonth = "202209", Amount = 600},

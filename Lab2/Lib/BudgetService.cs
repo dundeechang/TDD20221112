@@ -24,8 +24,6 @@
                 return 0;
             }
 
-            //var foundBudgets = budgets.FindAll(x => int.Parse(x.YearMonth) >= int.Parse(begDate.ToString("yyyyMM")) && int.Parse(x.YearMonth) <= int.Parse(endDate.ToString("yyyyMM")));
-
             Dictionary<string, (int days, int totalDays)> dateDict = CalcDate(startDate, endDate);
 
             decimal amount = 0;
@@ -46,14 +44,14 @@
             Dictionary<string, (int days, int totalDays)> dateDict = new();
 
             DateTime tempDate = startDate;
-            while (tempDate <= endDate)
+            while (true)
             {
+                int totalDays = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
+
                 int days;
                 if (tempDate.Year == endDate.Year && tempDate.Month == endDate.Month)
                 {
                     days = (endDate - tempDate).Days + 1;
-
-                    int totalDays = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
 
                     dateDict[tempDate.ToString("yyyyMM")] = (days, totalDays);
 
@@ -61,14 +59,13 @@
                 }
                 else
                 {
-                    DateTime nextDate1 = new DateTime(tempDate.Year, tempDate.Month + 1, 1);
+                    DateTime monthFirstDate = new DateTime(tempDate.Year, tempDate.Month, 1).AddMonths(1);
 
-                    days = (nextDate1 - tempDate).Days;
-
-                    int totalDays = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
+                    days = (monthFirstDate - tempDate).Days;
 
                     dateDict[tempDate.ToString("yyyyMM")] = (days, totalDays);
-                    tempDate = nextDate1;
+
+                    tempDate = monthFirstDate;
                 }
             }
 
