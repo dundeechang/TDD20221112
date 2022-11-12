@@ -26,36 +26,36 @@
 
             //var foundBudgets = budgets.FindAll(x => int.Parse(x.YearMonth) >= int.Parse(begDate.ToString("yyyyMM")) && int.Parse(x.YearMonth) <= int.Parse(endDate.ToString("yyyyMM")));
 
-            Dictionary<string, (int dates, int totalDates)> dateDict = CalcDate(startDate, endDate);
+            Dictionary<string, (int days, int totalDays)> dateDict = CalcDate(startDate, endDate);
 
             decimal amount = 0;
-            foreach ((string ym, (int dates, int totalDates)) in dateDict)
+            foreach ((string ym, (int days, int totalDays)) in dateDict)
             {
                 Budget budget = budgets.Find(x => x.YearMonth == ym);
                 if (budget != null && budget.Amount > 0)
                 {
-                    decimal thisAmount = budget.Amount * dates / totalDates;
+                    decimal thisAmount = budget.Amount * days / totalDays;
                     amount += thisAmount;
                 }
             }
             return amount;
         }
 
-        public Dictionary<string, (int dates, int totalDates)> CalcDate(DateTime startDate, DateTime endDate)
+        public Dictionary<string, (int days, int totalDays)> CalcDate(DateTime startDate, DateTime endDate)
         {
-            Dictionary<string, (int dates, int totalDates)> dateDict = new();
+            Dictionary<string, (int days, int totalDays)> dateDict = new();
 
             DateTime tempDate = startDate;
             while (tempDate <= endDate)
             {
-                int dates;
+                int days;
                 if (tempDate.Year == endDate.Year && tempDate.Month == endDate.Month)
                 {
-                    dates = (endDate - tempDate).Days + 1;
+                    days = (endDate - tempDate).Days + 1;
 
-                    int totalDates = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
+                    int totalDays = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
 
-                    dateDict[tempDate.ToString("yyyyMM")] = (dates, totalDates);
+                    dateDict[tempDate.ToString("yyyyMM")] = (days, totalDays);
 
                     break;
                 }
@@ -63,11 +63,11 @@
                 {
                     DateTime nextDate1 = new DateTime(tempDate.Year, tempDate.Month + 1, 1);
 
-                    dates = (nextDate1 - tempDate).Days;
+                    days = (nextDate1 - tempDate).Days;
 
-                    int totalDates = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
+                    int totalDays = DateTime.DaysInMonth(tempDate.Year, tempDate.Month);
 
-                    dateDict[tempDate.ToString("yyyyMM")] = (dates, totalDates);
+                    dateDict[tempDate.ToString("yyyyMM")] = (days, totalDays);
                     tempDate = nextDate1;
                 }
             }
